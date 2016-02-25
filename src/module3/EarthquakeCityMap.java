@@ -73,18 +73,36 @@ public class EarthquakeCityMap extends PApplet {
 	    //PointFeatures have a getLocation method
 	    List<PointFeature> earthquakes = ParseFeed.parseEarthquake(this, earthquakesURL);
 	    
-	    // These print statements show you (1) all of the relevant properties 
-	    // in the features, and (2) how to get one property and use it
 	    if (earthquakes.size() > 0) {
-	    	PointFeature f = earthquakes.get(0);
-	    	System.out.println(f.getProperties());
-	    	Object magObj = f.getProperty("magnitude");
-	    	float mag = Float.parseFloat(magObj.toString());
-	    	// PointFeatures also have a getLocation method
+		    for (PointFeature temp : earthquakes) {
+		    	PointFeature f = temp;
+//		    	System.out.println(f.getLocation());
+		    	Object magObj = f.getProperty("magnitude");
+		    	float mag = Float.parseFloat(magObj.toString());
+//		    	System.out.println(mag);
+			    SimplePointMarker Marker = new SimplePointMarker(f.getLocation());
+			    if (mag<=4.0) {
+			    	Marker.setColor(color(0, 0, 255, 200));
+				    Marker.setStrokeColor(color(0, 0, 255));
+				    Marker.setRadius(10);
+			    }
+			    else if ((mag>=4.0) && (mag<=4.9)) {
+			    	Marker.setColor(color(255, 255, 0, 200));
+				    Marker.setStrokeColor(color(255, 255, 0));
+				    Marker.setRadius(20);
+			    }
+			    else if (mag>=4.9){
+			    	Marker.setColor(color(255, 0, 0, 200));
+				    Marker.setStrokeColor(color(255, 255, 255));
+				    Marker.setRadius(30);
+			    }
+				map.addMarkers(Marker);
+		    	
+			}
 	    }
-	    
+
 	    // Here is an example of how to use Processing's color method to generate 
-	    // an int that represents the color yellow.  
+	    // an int that represents the color yellow.
 	    int yellow = color(255, 255, 0);
 	    
 	    //TODO: Add code here as appropriate
@@ -111,6 +129,13 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() 
 	{	
 		// Remember you can use Processing's graphics methods here
+		fill(255,255,255);
+		rect(20, 50, 160, 300, 7);
+		fill(0, 102, 153);
+		text("5.0+ Magnitude", 60, 90); 
+		textSize(12);
+//		textAlign(RIGHT);
+		
 	
 	}
 }
