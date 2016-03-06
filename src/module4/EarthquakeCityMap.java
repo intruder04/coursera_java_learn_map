@@ -59,6 +59,8 @@ public class EarthquakeCityMap extends PApplet {
 
 	// A List of country markers
 	private List<Marker> countryMarkers;
+
+	private int count;
 	
 	public void setup() {		
 		// (1) Initializing canvas and map tiles
@@ -76,11 +78,11 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+//		earthquakesURL = "test1.atom";
+//		earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -160,13 +162,15 @@ public class EarthquakeCityMap extends PApplet {
 	// "country" property of its PointFeature to the country where it occurred
 	// and returns true.  Notice that the helper method isInCountry will
 	// set this "country" property already.  Otherwise it returns false.
+	// IMPLEMENT THIS: loop over all countries to check if location is in any of them
+	// TODO: Implement this method using the helper method isInCountry
+	// not inside any country
 	private boolean isLand(PointFeature earthquake) {
-		
-		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
-		
-		// TODO: Implement this method using the helper method isInCountry
-		
-		// not inside any country
+		for (Marker country : countryMarkers) {
+			if (isInCountry(earthquake, country)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -179,6 +183,49 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// TODO: Implement this method
+		int ocean = 0;
+		int land = 0;
+		int totalcount = 0;
+		for (Marker country : countryMarkers) {
+			count = 0;
+			
+//			System.out.println(country);
+			System.out.println("name - "+country.getProperty("name"));
+			
+			for (Marker quake : quakeMarkers) {
+				if(quake.getClass() == OceanQuakeMarker.class) {
+//					System.out.println(quake.getClass());
+//					System.out.println("Ocean");
+					ocean++;
+					
+				}
+				if(quake.getClass() == LandQuakeMarker.class) {
+//					System.out.println(quake.getClass());
+//					System.out.println("Land");
+					land++;
+					
+				}
+				if (country.getProperty("name") == quake.getProperty("country")){
+//					System.out.println("match!");
+//					count++;
+//					totalcount++;
+				}
+				if ((country.getProperty("name") == quake.getProperty("country")) || (quake.getClass() == OceanQuakeMarker.class)){
+//					System.out.println("match!");
+					count++;
+					totalcount++;
+				}
+				
+//				System.out.println("quake - " + quake.getProperty("country"));
+			}
+			System.out.println("quakes - "+count);
+			
+			
+		}
+		System.out.println("total quakes - "+totalcount);
+		System.out.println("total ocean - "+ocean);
+		System.out.println("total land - "+land);
+		
 	}
 	
 	
